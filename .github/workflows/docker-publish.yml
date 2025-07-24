@@ -17,7 +17,7 @@ jobs:
         id: get_github_tag
         run: |
           TAG=$(curl -sSL -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            "https://api.github.com/repos/NapNeko/NapCatQQ/releases/latest" | jq -r '.tag_name')
+            "https://api.github.com/repos/jiongjiongJOJO/NapCatQQ/releases/latest" | jq -r '.tag_name')
           echo "github_tag=$TAG" >> $GITHUB_OUTPUT
           
       # 检查 Docker Hub 是否存在该版本
@@ -26,7 +26,7 @@ jobs:
         run: |
           # 查询 Docker Hub API
           response=$(curl -s -o /dev/null -w "%{http_code}" \
-            "https://hub.docker.com/v2/repositories/mlikiowa/napcat-docker/tags/${{ steps.get_github_tag.outputs.github_tag }}")
+            "https://hub.docker.com/v2/repositories/jiongjiong/napcat-docker/tags/${{ steps.get_github_tag.outputs.github_tag }}")
           
           # 设置检查结果
           if [ "$response" = "200" ]; then
@@ -57,7 +57,7 @@ jobs:
       - name: Run buildx and push
         if: ${{ steps.check_docker_image.outputs.exists == 'false' }}
         env:
-          DOCKER_REPO: mlikiowa/napcat-docker
+          DOCKER_REPO: jiongjiong/napcat-docker
         run: |
           docker buildx build \
             --output "type=image,push=true" \
